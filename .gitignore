@@ -1,0 +1,45 @@
+# Ignore Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.so
+
+# Ignore virtual environments
+ml_env/
+venv/
+env/
+
+# Ignore dataset image files but keep folder structure
+apple_dataset/raw/*
+apple_dataset/augmented/*
+!apple_dataset/raw/.gitkeep
+!apple_dataset/augmented/.gitkeep
+
+# Ignore logs, checkpoints, and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+training_logs_ultimate/
+checkpoints/
+outputs/
+*.ckpt
+*.pth
+*.h5
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore Python packaging
+build/
+dist/
+*.egg-info/
+
+# Ignore IDE/editor settings
+.vscode/
+.idea/
+*.swp
+
