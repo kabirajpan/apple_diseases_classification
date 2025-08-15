@@ -8,11 +8,12 @@ ml_env/
 venv/
 env/
 
-# Ignore dataset image files but keep folder structure
-apple_dataset/raw/*
-apple_dataset/augmented/*
-!apple_dataset/raw/.gitkeep
-!apple_dataset/augmented/.gitkeep
+# Ignore dataset contents but keep structure
+apple_dataset/raw/*/*
+!apple_dataset/raw/*/.gitkeep
+
+apple_dataset/augmented/*/*
+!apple_dataset/augmented/*/.gitkeep
 
 # Ignore logs, checkpoints, and temporary files
 *.log
