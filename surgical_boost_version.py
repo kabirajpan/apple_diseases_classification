@@ -1,4 +1,4 @@
-import tensorflow as tf
+import tensorflow as tf    
 from tensorflow.keras.applications import MobileNetV2
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Dropout, BatchNormalization
 from tensorflow.keras.models import Model

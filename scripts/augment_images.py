@@ -60,7 +60,7 @@ for class_name in os.listdir(RAW_DATA_DIR):
     flow = datagen.flow_from_directory(
         RAW_DATA_DIR,
         classes=[class_name],   # process only this class
-        target_size=(224, 224), # resize for MobileNetV2
+        target_size=(128, 128), 
         batch_size=1,
         class_mode=None,  # we don't need labels for augmentation
         save_to_dir=class_output_dir,

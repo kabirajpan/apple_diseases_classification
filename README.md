@@ -1,225 +1,265 @@
-# Apple Leaf Disease Classification Using Enhanced MobileNetV2
+# Apple Leaf Disease Classification - Multi-Model Comparison
 
-## Project Overview
+A comprehensive deep learning project for automated classification of apple leaf diseases using multiple state-of-the-art CNN architectures. Optimized for resource-constrained hardware (i3 6th gen) with cloud deployment support.
 
-This project implements a deep learning solution for automatic classification of apple leaf diseases using a surgically optimized MobileNetV2 architecture. The system achieves **94.9% accuracy** with Test-Time Augmentation (TTA) on a resource-constrained i3 6th generation laptop, demonstrating efficient deep learning deployment for agricultural applications.
+## 🎯 Project Overview
 
-## 🎯 Key Achievements
+This project implements and compares **4 different deep learning architectures** for apple leaf disease classification:
+- **MobileNetV2**: Lightweight and efficient
+- **MobileNetV3**: Improved MobileNet with better accuracy
+- **ResNet**: Deep residual learning
+- **EfficientNet**: Compound scaling for optimal performance
 
-- **Accuracy**: 94.9% validation accuracy with TTA boost
-- **Efficiency**: Optimized for i3 6th gen hardware (4.4 hour training)
-- **Methodology**: Two-phase transfer learning with surgical improvements
-- **Dataset**: Apple leaf disease classification (4 classes)
-- **Architecture**: Enhanced MobileNetV2 with custom classifier head
+**Target Accuracy**: 95%+ with Test-Time Augmentation (TTA)
 
-## 📊 Results Summary
+## 📊 Dataset
 
-| Metric | Standard Training | With Surgical Boost | With TTA |
-|--------|-------------------|---------------------|----------|
-| Validation Accuracy | 93.4% | 93.4% | **94.9%** |
-| Training Time | 4.4 hours | 4.4 hours | +5 minutes |
-| Model Size | ~14 MB | ~14 MB | ~14 MB |
-| Hardware | i3 6th Gen | i3 6th Gen | i3 6th Gen |
-
-## 🔬 Technical Methodology
-
-### Surgical Improvements Applied
-
-1. **Label Smoothing (0.1)**: Prevents overconfidence and improves generalization
-2. **Optimized Adam Parameters**: Beta values (0.9, 0.999) for stable convergence
-3. **Enhanced Test-Time Augmentation**: 5 augmentations for inference-time boost
-4. **Two-Phase Training**: Transfer learning followed by fine-tuning
-
-### Architecture Details
-
-- **Base Model**: MobileNetV2 (ImageNet pre-trained)
-- **Input Size**: 128×128×3 (i3-optimized)
-- **Classifier Head**: 
-  - GlobalAveragePooling2D
-  - BatchNormalization + Dense(256) + ReLU + Dropout(0.5)
-  - BatchNormalization + Dense(128) + ReLU + Dropout(0.3)
-  - Dense(4) + Softmax
-
-### Training Strategy
-
-**Phase 1: Transfer Learning (30 epochs)**
-- Freeze MobileNetV2 backbone
-- Train classifier head only
-- Learning rate: 1e-3
-- Focus on domain adaptation
-
-**Phase 2: Fine-tuning (25 epochs)**
-- Unfreeze top 20 layers of backbone
-- Lower learning rate: 1e-5
-- Cosine annealing schedule
-- Refine feature representations
-
-## 📁 Project Structure
-
-```
-04_research_paper/
-├── README.md                                    # This file
-├── surgical_boost_version.py                   # Main training script
-├── surgical_boost_plots.py                     # Results visualization
-├── quick_tta_eval.py                          # TTA evaluation
-├── best_mobilenetv2_surgical_boost_i3_phase2.keras  # Trained model
-├── surgical_boost_results_*.png               # Training plots
-├── apple_dataset/
-│   └── augmented/                             # Pre-augmented dataset
-│       ├── alternaria/                        # Disease class 1
-│       ├── healthy/                           # Healthy leaves
-│       ├── rust/                              # Disease class 2
-│       └── scab/                              # Disease class 3
-├── training_logs_ultimate/
-│   ├── phase1_log_*.csv                       # Phase 1 metrics
-│   └── phase2_log_*.csv                       # Phase 2 metrics
-└── scripts/
-    ├── augment_config.py                      # Augmentation settings
-    └── augment_images.py                      # Data preprocessing
-```
-
-## 🚀 How to Run
-
-### Prerequisites
-```bash
-# Create virtual environment
-python -m venv ml_env
-source ml_env/bin/activate  # Linux/Mac
-# or ml_env\Scripts\activate  # Windows
-
-# Install dependencies
-pip install tensorflow==2.19.0
-pip install matplotlib seaborn pandas scikit-learn numpy
-```
-
-### Augmentation images
-```bash
-# generate augment images
-python /scripts/augment_images.py
-
-# Expected output:
-# 🚀 ENHANCED SURGICAL BOOST - Target 96%+ accuracy!
-# ⏱️  Expected time: ~6-6.5 hours (worth it for 96%+!)
-```
-
-### Training
-```bash
-# Run enhanced surgical boost training
-python surgical_boost_version.py
-
-# Expected output:
-# 🚀 ENHANCED SURGICAL BOOST - Target 96%+ accuracy!
-# ⏱️  Expected time: ~6-6.5 hours (worth it for 96%+!)
-```
-
-### Evaluation
-```bash
-# Run TTA evaluation on trained model
-python quick_tta_eval.py
-```
-
-### Visualization
-```bash
-# Generate training plots
-python surgical_boost_plots.py
-```
-
-## 💡 Key Innovations
-
-### 1. Surgical Optimization Approach
-Instead of architectural changes, applied minimal but high-impact modifications:
-- Label smoothing for better generalization
-- Optimized hyperparameters for stability
-- Strategic fine-tuning layer selection
-
-### 2. Hardware-Aware Design
-Optimized specifically for resource-constrained environments:
-- Reduced input resolution (128×128)
-- Optimal batch size (12) for memory efficiency
-- Efficient two-phase training strategy
-
-### 3. Test-Time Augmentation Enhancement
-- Multiple augmented predictions averaged for robust inference
-- 5 different augmentation strategies
-- +1.5% accuracy improvement with minimal computational cost
-
-## 📈 Performance Analysis
-
-### Learning Curves
-The training exhibits healthy convergence patterns:
-- Phase 1: Rapid initial learning (48% → 87% accuracy)
-- Phase 2: Gradual refinement (87% → 93.4% accuracy)
-- TTA: Final boost to 94.9% accuracy
-
-### Generalization Analysis
-- Final generalization gap: 5.6% (training 98.9% vs validation 93.4%)
-- Indicates good model capacity without severe overfitting
-- Label smoothing effectively prevents overconfidence
-
-## 🔧 System Requirements
-
-### Minimum Hardware
-- **CPU**: i3 6th generation or equivalent
-- **RAM**: 8GB (4GB minimum)
-- **Storage**: 5GB free space
-- **OS**: Linux, Windows, or macOS
-
-### Software Dependencies
-- Python 3.8+
-- TensorFlow 2.19.0
-- NumPy, Pandas, Matplotlib, Scikit-learn
-- OpenCV (for image processing)
-
-## 📊 Dataset Information
-
-### Classes
+### Classes (4 categories)
 - **Alternaria**: Apple alternaria leaf spot disease
 - **Healthy**: Healthy apple leaves
 - **Rust**: Apple rust disease
 - **Scab**: Apple scab disease
 
-### Dataset Statistics
-- **Total Images**: ~19,000 (pre-augmented)
-- **Training Split**: 80% (~15,000 images)
-- **Validation Split**: 20% (~4,000 images)
-- **Image Resolution**: 128×128 pixels
-- **Format**: RGB JPEG images
-
-## 🏆 Research Contributions
-
-1. **Efficient Transfer Learning**: Demonstrated effective adaptation of ImageNet features to agricultural domain
-2. **Surgical Optimization**: Proved that minimal, targeted improvements can significantly boost performance
-3. **Resource-Constrained Deployment**: Achieved state-of-the-art results on budget hardware
-4. **Reproducible Methodology**: Complete pipeline with detailed documentation and code
-
-## 📚 Future Work
-
-- **Extended Dataset**: Include more apple disease types and varieties
-- **Model Compression**: Quantization for mobile deployment
-- **Real-time Inference**: Edge device optimization
-- **Multi-crop Support**: Extend to other fruit crops
-
-## 📋 Citation
-
-If you use this work, please cite:
+### Dataset Structure
 ```
-Apple Leaf Disease Classification Using Enhanced MobileNetV2 with Surgical Optimizations
-Achieved 94.9% accuracy on resource-constrained hardware using two-phase transfer learning
+apple_dataset/
+├── raw/                    # Original images (not included in repo)
+│   ├── alternaria/
+│   ├── healthy/
+│   ├── rust/
+│   └── scab/
+└── augmented/             # Pre-augmented images (generated by script)
+    ├── alternaria/
+    ├── healthy/
+    ├── rust/
+    └── scab/
 ```
 
-## 🔗 Files for Reproduction
+**Note**: Dataset images are not included in this repository. You need to provide your own dataset following the structure above.
 
-### Essential Files
-- `surgical_boost_version.py` - Complete training pipeline
-- `best_mobilenetv2_surgical_boost_i3_phase2.keras` - Trained model weights
-- `training_logs_ultimate/` - Training metrics and logs
-- `surgical_boost_results_*.png` - Results visualization
+## 🏗️ Project Structure
 
-### Model Performance
-- **Standard Accuracy**: 93.4%
-- **TTA Enhanced**: 94.9%
-- **Training Time**: 4.4 hours on i3 6th gen
-- **Model Size**: 14 MB (deployment-ready)
+```
+apple_diseases_classification/
+├── mobilenetv2/           # MobileNetV2 model
+│   ├── train.py          # Optimized training script
+│   ├── checkpoints/      # Saved models
+│   ├── logs/            # Training logs (CSV)
+│   ├── results/         # Evaluation results (JSON)
+│   └── README.md        # Model-specific docs
+│
+├── mobilenetv3/          # MobileNetV3 model
+│   ├── train.py
+│   ├── checkpoints/
+│   ├── logs/
+│   ├── results/
+│   └── README.md
+│
+├── resnet/               # ResNet model
+│   └── (coming soon)
+│
+├── efficientnet/         # EfficientNet model
+│   └── (coming soon)
+│
+├── scripts/              # Shared utilities
+│   ├── augment_config.py    # Augmentation configuration
+│   └── augment_images.py    # Data preprocessing
+│
+├── real_world_test/      # Real-world testing
+│   ├── real_world_test.py
+│   └── test_images/
+│
+├── final_result/         # Model comparison
+│   ├── compare_all_models.py
+│   └── README.md
+│
+├── requirements.txt      # Python dependencies
+├── PROJECT_STRUCTURE.md  # Detailed structure
+└── README.md            # This file
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+```bash
+# Python 3.8+
+python --version
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# or venv\Scripts\activate  # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Training a Model
+
+#### Option 1: Train MobileNetV2 (Fastest)
+```bash
+cd mobilenetv2
+python train.py
+```
+
+#### Option 2: Train MobileNetV3 (Better Accuracy)
+```bash
+cd mobilenetv3
+python train.py
+```
+
+### Pre-Augment Dataset (Optional)
+```bash
+python scripts/augment_images.py
+```
+**Note**: Pre-augmentation is optional. Training scripts can work with raw data using runtime augmentation.
+
+## 💻 Training Specifications
+
+### Hardware Requirements
+- **Minimum**: Intel i3 6th gen (4GB RAM)
+- **Recommended**: GPU (NVIDIA T4 or better)
+- **Cloud**: Google Colab (Free T4 GPU)
+
+### Training Hyperparameters
+
+| Parameter | MobileNetV2 | MobileNetV3 |
+|-----------|-------------|-------------|
+| Image Size | 128×128 | 128×128 |
+| Batch Size | 12 | 12 |
+| Phase 1 Epochs | 12 | 12 |
+| Phase 2 Epochs | 6 | 6 |
+| Total Epochs | 18 | 18 |
+| Label Smoothing | 0.08 | 0.08 |
+| TTA Augmentations | 7 | 7 |
+| Mixed Precision | ✅ | ✅ |
+
+### Expected Training Time
+
+| Hardware | Time |
+|----------|------|
+| i3 6th Gen (CPU) | ~1.5-2 hours |
+| Google Colab (T4 GPU) | ~15-30 minutes |
+| RTX 3060 (GPU) | ~10-15 minutes |
+
+## 📈 Model Outputs
+
+Each training run generates:
+- **Checkpoints**: `checkpoints/best_*.keras` - Best model weights
+- **Logs**: `logs/*.csv` - Training history
+- **Results**: `results/*.json` - Comprehensive metrics
+- **Plots**: 
+  - `evaluation_plots_*.png` - Confusion matrix, ROC, PR curves
+  - `training_curves_*.png` - Accuracy/loss curves
+
+### Evaluation Metrics
+- Accuracy (Standard & TTA)
+- Mean Average Precision (MAP)
+- Per-class Precision, Recall, F1-Score
+- ROC-AUC curves
+- Confusion matrices
+- Generalization gap
+
+## ☁️ Google Colab Deployment
+
+### Setup Instructions
+
+1. **Push code to GitHub** (dataset excluded)
+2. **Upload dataset to Google Drive** or prepare for direct upload
+3. **Open Google Colab** and create new notebook
+4. **Select GPU runtime**: Runtime → Change runtime type → GPU (T4)
+
+### Colab Setup Code
+
+```python
+# Mount Google Drive (if dataset stored there)
+from google.colab import drive
+drive.mount('/content/drive')
+
+# Clone repository
+!git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+%cd YOUR_REPO
+
+# Install dependencies
+!pip install -q tensorflow matplotlib seaborn scikit-learn
+
+# Copy dataset from Drive (adjust path)
+!cp -r /content/drive/MyDrive/apple_dataset ./
+
+# Train model
+%cd mobilenetv2
+!python train.py
+```
+
+## 🔧 Configuration
+
+### Augmentation Settings
+Edit `scripts/augment_config.py` to customize:
+- Rotation range
+- Width/height shifts
+- Zoom range
+- Brightness adjustments
+- Custom preprocessing functions
+
+### Training Parameters
+Edit model-specific `train.py` to adjust:
+- Image size
+- Batch size
+- Number of epochs
+- Learning rate schedules
+- Layer unfreezing strategy
+
+## 📊 Model Comparison
+
+Use `final_result/compare_all_models.py` to compare all trained models:
+```bash
+cd final_result
+python compare_all_models.py
+```
+
+Generates comprehensive comparison reports across all architectures.
+
+## 🧪 Real-World Testing
+
+Test your trained models on real-world images:
+```bash
+cd real_world_test
+python real_world_test.py --model ../mobilenetv2/checkpoints/best_*.keras --image test_images/sample.jpg
+```
+
+## 📝 Research Paper Ready
+
+This project structure is designed for research papers:
+- ✅ Consistent evaluation metrics across models
+- ✅ Comprehensive visualizations
+- ✅ Reproducible experiments
+- ✅ Detailed logging and results
+
+## 🤝 Contributing
+
+Contributions are welcome! Areas for improvement:
+- Additional model architectures
+- Enhanced augmentation strategies
+- Ensemble methods
+- Mobile deployment optimization
+- Extended disease categories
+
+## 📄 License
+
+[Add your license here]
+
+## 🔗 References
+
+- MobileNetV2: [Sandler et al., 2018](https://arxiv.org/abs/1801.04381)
+- MobileNetV3: [Howard et al., 2019](https://arxiv.org/abs/1905.02244)
+- ResNet: [He et al., 2015](https://arxiv.org/abs/1512.03385)
+- EfficientNet: [Tan & Le, 2019](https://arxiv.org/abs/1905.11946)
+
+## 📧 Contact
+
+[Add your contact information]
 
 ---
-*This project demonstrates the effectiveness of surgical optimization techniques in achieving high-performance deep learning on resource-constrained hardware for agricultural applications.*
+
+**Note**: This is an active research project. Star ⭐ the repository to follow updates!
